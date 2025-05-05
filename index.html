@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Object Tracker for Desk Items</title>
   <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
-
-  <!-- Required Libraries -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.20.0/dist/tf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
 </head>
@@ -17,26 +14,25 @@
     <h1>Object Tracker for Desk Items</h1>
   </header>
 
-  <!-- Control Buttons -->
   <section class="controls">
     <button id="startCamera">Start Camera</button>
     <button id="loadModel">Load Model</button>
     <button id="startTracking" class="track-button">Start Tracking</button>
+    <div class="upload-container">
+      <input type="file" id="imageUpload" accept="image/*" />
+      <button id="submitImage" disabled>Submit Image</button>
+    </div>
   </section>
 
-  <!-- Main App Content -->
   <main class="main-container">
-    <!-- Webcam and Canvas Overlay -->
     <div class="video-container">
       <video id="webcam" autoplay playsinline></video>
       <canvas id="overlay"></canvas>
     </div>
 
-    <!-- Detection Log and Snapshots -->
     <div class="log-container">
       <h2>Detection History</h2>
       <ul id="predictionLog"></ul>
-
       <div id="snapshotGallery">
         <h3>Snapshots</h3>
         <div class="gallery"></div>
@@ -44,14 +40,18 @@
     </div>
   </main>
 
-  <!-- Extra Controls -->
   <section class="extras">
-    <button id="saveSnapshot">Save Snapshot</button>
     <button id="clearLog">Clear Log</button>
     <button id="clearGallery">Clear History</button>
+    <label><input type="checkbox" id="toggleSound" /> Sound On</label>
   </section>
 
-  <!--App Script -->
+  <div class="uploaded-image-display" id="uploadedDisplay">
+    <h3>Uploaded Image Result</h3>
+    <img id="uploadedPreview" src="" alt="Uploaded Image" style="display: none;" />
+    <p id="uploadedPrediction"></p>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
