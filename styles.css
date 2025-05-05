@@ -69,3 +69,83 @@ body {
     background: #eee;
     border-left: 5px solid #0077cc;
   }
+
+  #snapshotGallery .gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 1rem;
+  }
+  
+  .snapshot-entry {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f0f0f0;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  .snapshot-entry img {
+    width: 80px;
+    height: auto;
+    border: 1px solid #ccc;
+  }
+
+  #clearGallery {
+    background-color: #cc0000;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  #clearGallery:hover {
+    background-color: #a10000;
+  }
+
+  .track-button {
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Active state style */
+  .track-button.tracking-active {
+    background-color: #cc0000;
+  }
+  
+  /* Animated indicator dot */
+  .track-button.tracking-active::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 10px;
+    height: 10px;
+    background-color: lime;
+    border-radius: 50%;
+    animation: pulse 1s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.4);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
