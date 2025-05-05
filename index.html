@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Object Tracker for Desk Items</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.20.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+  </head>
+<body>
+  <header>
+    <h1>Object Tracker for Desk Items</h1>
+  </header>
+
+  <section class="controls">
+    <button id="startCamera">Start Camera</button>
+    <button id="loadModel">Load Model</button>
+    <button id="startTracking">Start Tracking</button>
+  </section>
+
+  <main class="main-container">
+    <div class="video-container">
+      <video id="webcam" autoplay playsinline></video>
+      <canvas id="overlay"></canvas>
+    </div>
+
+    <div class="log-container">
+      <h2>Prediction Log</h2>
+      <ul id="predictionLog"></ul>
+    </div>
+  </main>
+
+  <section class="extras">
+    <button id="saveSnapshot">Save Snapshot</button>
+    <button id="clearLog">Clear Log</button>
+    <label><input type="checkbox" id="toggleSound" /> Sound On</label>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
