@@ -18,10 +18,6 @@
     <button id="startCamera">Start Camera</button>
     <button id="loadModel">Load Model</button>
     <button id="startTracking" class="track-button">Start Tracking</button>
-    <div class="upload-container">
-      <input type="file" id="imageUpload" accept="image/*" />
-      <button id="submitImage" disabled>Submit Image</button>
-    </div>
   </section>
 
   <main class="main-container">
@@ -33,6 +29,7 @@
     <div class="log-container">
       <h2>Detection History</h2>
       <ul id="predictionLog"></ul>
+
       <div id="snapshotGallery">
         <h3>Snapshots</h3>
         <div class="gallery"></div>
@@ -45,12 +42,6 @@
     <button id="clearGallery">Clear History</button>
     <label><input type="checkbox" id="toggleSound" /> Sound On</label>
   </section>
-
-  <div class="uploaded-image-display" id="uploadedDisplay">
-    <h3>Uploaded Image Result</h3>
-    <img id="uploadedPreview" src="" alt="Uploaded Image" style="display: none;" />
-    <p id="uploadedPrediction"></p>
-  </div>
 
   <script src="script.js"></script>
 </body>

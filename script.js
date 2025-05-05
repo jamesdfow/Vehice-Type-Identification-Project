@@ -3,12 +3,18 @@ const overlay = document.getElementById("overlay");
 const ctx = overlay.getContext("2d");
 const predictionLog = document.getElementById("predictionLog");
 
+const webcamButton = document.getElementById("startCamera");
+const trackingButton = document.getElementById("startTracking");
+
 let model, maxPredictions;
 let loopActive = false;
 let webcamStream = null;
 
-const webcamButton = document.getElementById("startCamera");
-const trackingButton = document.getElementById("startTracking");
+document.getElementById("loadModel").addEventListener("click", async () => {
+  model = await tmImage.load("Models/model.json", "Models/metadata.json");
+  maxPredictions = model.getTotalClasses();
+  alert("✅ Model loaded!");
+});
 
 webcamButton.addEventListener("click", async () => {
   if (!webcamStream) {
@@ -22,6 +28,8 @@ webcamButton.addEventListener("click", async () => {
         overlay.height = webcam.videoHeight;
       });
 
+      webcam.style.display = "block";
+      overlay.style.display = "block";
       webcamButton.textContent = "Stop Camera";
     } catch (err) {
       alert("Could not start webcam.");
@@ -30,6 +38,8 @@ webcamButton.addEventListener("click", async () => {
     webcamStream.getTracks().forEach(track => track.stop());
     webcam.srcObject = null;
     webcamStream = null;
+    webcam.style.display = "none";
+    overlay.style.display = "none";
     ctx.clearRect(0, 0, overlay.width, overlay.height);
     webcamButton.textContent = "Start Camera";
   }
@@ -51,12 +61,6 @@ trackingButton.addEventListener("click", () => {
     trackingButton.textContent = "Start Tracking";
     trackingButton.classList.remove("tracking-active");
   }
-});
-
-document.getElementById("loadModel").addEventListener("click", async () => {
-  model = await tmImage.load("Models/model.json", "Models/metadata.json");
-  maxPredictions = model.getTotalClasses();
-  alert("✅ Model loaded!");
 });
 
 let lastLoggedLabel = "";
@@ -81,6 +85,7 @@ async function predict() {
       lastLoggedLabel = top.className;
       lastLoggedTime = now;
       captureSnapshot(top.className, top.probability);
+      logPrediction(top.className, top.probability);
     }
 
     await new Promise(requestAnimationFrame);
@@ -120,6 +125,15 @@ function captureSnapshot(label, prob) {
   document.querySelector("#snapshotGallery .gallery").prepend(container);
 }
 
+function logPrediction(label, prob) {
+  const li = document.createElement("li");
+  li.textContent = `${label} – ${(prob * 100).toFixed(1)}%`;
+  predictionLog.prepend(li);
+  if (predictionLog.children.length > 10) {
+    predictionLog.removeChild(predictionLog.lastChild);
+  }
+}
+
 document.getElementById("clearGallery").addEventListener("click", () => {
   document.querySelector("#snapshotGallery .gallery").innerHTML = "";
   lastLoggedLabel = "";
@@ -128,40 +142,4 @@ document.getElementById("clearGallery").addEventListener("click", () => {
 
 document.getElementById("clearLog").addEventListener("click", () => {
   predictionLog.innerHTML = "";
-});
-
-/* === Image Upload Prediction === */
-const imageUploadInput = document.getElementById("imageUpload");
-const submitImageBtn = document.getElementById("submitImage");
-const uploadedPreview = document.getElementById("uploadedPreview");
-const uploadedPrediction = document.getElementById("uploadedPrediction");
-
-let uploadedFile = null;
-
-imageUploadInput.addEventListener("change", (e) => {
-  uploadedFile = e.target.files[0];
-  if (uploadedFile) {
-    submitImageBtn.disabled = false;
-    const reader = new FileReader();
-    reader.onload = function (event) {
-      uploadedPreview.src = event.target.result;
-      uploadedPreview.style.display = "block";
-    };
-    reader.readAsDataURL(uploadedFile);
-  }
-});
-
-submitImageBtn.addEventListener("click", async () => {
-  if (!uploadedFile || !model) return;
-
-  const img = new Image();
-  img.src = URL.createObjectURL(uploadedFile);
-
-  img.onload = async () => {
-    const predictions = await model.predict(img);
-    const top = predictions.reduce((max, curr) =>
-      curr.probability > max.probability ? curr : max
-    );
-    uploadedPrediction.textContent = `Prediction: ${top.className} (${(top.probability * 100).toFixed(1)}%)`;
-  };
 });
