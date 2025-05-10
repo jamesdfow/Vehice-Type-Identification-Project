@@ -19,8 +19,13 @@ document.getElementById("loadModel").addEventListener("click", async () => {
 webcamButton.addEventListener("click", async () => {
   if (!webcamStream) {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      webcam.srcObject = stream;
+const constraints = {
+  video: {
+    facingMode: { ideal: "environment" } // Try to use the rear camera
+  }
+};
+
+const stream = await navigator.mediaDevices.getUserMedia(constraints);      webcam.srcObject = stream;
       webcamStream = stream;
 
       webcam.addEventListener("loadedmetadata", () => {
