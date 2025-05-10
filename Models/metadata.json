@@ -1,1 +1,1 @@
-{"tfjsVersion":"1.7.4","tmVersion":"2.4.10","packageVersion":"0.8.4-alpha2","packageName":"@teachablemachine/image","timeStamp":"2025-05-05T18:43:58.096Z","userMetadata":{},"modelName":"tm-my-image-model","labels":["Loki","Clyde","Human"],"imageSize":224}
+{"tfjsVersion":"1.7.4","tmVersion":"2.4.10","packageVersion":"0.8.4-alpha2","packageName":"@teachablemachine/image","timeStamp":"2025-05-10T02:46:55.256Z","userMetadata":{},"modelName":"Vehicle Identification","labels":["Truck","Car - Sedan","Sport Utility Vehicle","Van","Motorcycle","Bicycle"],"imageSize":224}
