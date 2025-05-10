@@ -15,6 +15,11 @@
   </header>
 
   <section class="controls">
+    <label for="cameraFacing">Camera:</label>
+<select id="cameraFacing">
+  <option value="user">Front</option>
+  <option value="environment">Rear</option>
+</select>
     <button id="startCamera">Start Camera</button>
     <button id="loadModel">Load Model</button>
     <button id="startTracking" class="track-button">Start Tracking</button>
@@ -36,10 +41,7 @@
       </div>
     </div>
   </main>
-<select id="cameraFacing">
-  <option value="user">Front Camera</option>
-  <option value="environment">Rear Camera</option>
-</select>
+
   <section class="extras">
     <button id="clearLog">Clear Log</button>
     <button id="clearGallery">Clear History</button>

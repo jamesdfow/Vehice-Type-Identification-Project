@@ -19,36 +19,57 @@ document.getElementById("loadModel").addEventListener("click", async () => {
 webcamButton.addEventListener("click", async () => {
   if (!webcamStream) {
     try {
-const constraints = {
-  video: {
-    facingMode: { ideal: "environment" } // Try to use the rear camera
-  }
-};
+      const facingMode = document.getElementById("cameraFacing").value;
 
-const stream = await navigator.mediaDevices.getUserMedia(constraints);      webcam.srcObject = stream;
-      webcamStream = stream;
+      let constraints = {
+        video: { facingMode: { exact: facingMode } }
+      };
 
-      webcam.addEventListener("loadedmetadata", () => {
-        overlay.width = webcam.videoWidth;
-        overlay.height = webcam.videoHeight;
-      });
+      // Fallback to default if exact fails
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        handleStream(stream);
+      } catch (error) {
+        console.warn("Exact facingMode failed, falling back to ideal mode.");
+        constraints = {
+          video: { facingMode: { ideal: facingMode } }
+        };
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        handleStream(stream);
+      }
 
-      webcam.style.display = "block";
-      overlay.style.display = "block";
-      webcamButton.textContent = "Stop Camera";
     } catch (err) {
       alert("Could not start webcam.");
+      console.error(err);
     }
   } else {
-    webcamStream.getTracks().forEach(track => track.stop());
-    webcam.srcObject = null;
-    webcamStream = null;
-    webcam.style.display = "none";
-    overlay.style.display = "none";
-    ctx.clearRect(0, 0, overlay.width, overlay.height);
-    webcamButton.textContent = "Start Camera";
+    stopCamera();
   }
 });
+
+function handleStream(stream) {
+  webcam.srcObject = stream;
+  webcamStream = stream;
+
+  webcam.addEventListener("loadedmetadata", () => {
+    overlay.width = webcam.videoWidth;
+    overlay.height = webcam.videoHeight;
+  });
+
+  webcam.style.display = "block";
+  overlay.style.display = "block";
+  webcamButton.textContent = "Stop Camera";
+}
+
+function stopCamera() {
+  webcamStream.getTracks().forEach(track => track.stop());
+  webcam.srcObject = null;
+  webcamStream = null;
+  webcam.style.display = "none";
+  overlay.style.display = "none";
+  ctx.clearRect(0, 0, overlay.width, overlay.height);
+  webcamButton.textContent = "Start Camera";
+}
 
 trackingButton.addEventListener("click", () => {
   if (!loopActive) {
